@@ -169,7 +169,7 @@ var (
 	_csi                   = Modifier{_esc, '['}  // Control Sequence Introducer
 	_osc                   = Modifier{_esc, ']'}  // Operating System Command
 	_stringTerminator      = Modifier{_esc, '\\'} // String Terminator
-	_modReset              = Modifier("0")
+	ModReset               = Modifier("0")
 	ModBold                = Modifier("1")
 	ModFaint               = Modifier("2")
 	ModItalic              = Modifier("3")
@@ -229,7 +229,7 @@ func (b Buffer) Styled(f func(Buffer), mods ...Modifier) Buffer {
 
 	b.writeMods(mods...)
 	f(b)
-	b.writeMods(_modReset)
+	b.writeMods(ModReset)
 	return b
 }
 

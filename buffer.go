@@ -180,6 +180,31 @@ var (
 	ModOverline            = Modifier("53")
 )
 
+func CombineModifiers(mods ...Modifier) Modifier {
+	// bytes.Join rewritten since it CANNOT ELIDE []Modifier TO [][]byte
+	// return bytes.Join([][]byte(mods), []byte{';'})
+	if len(mods) == 0 {
+		return []byte{}
+	}
+
+	if len(mods) == 1 {
+		return mods[0]
+	}
+
+	n := len(mods) - 1
+	for _, v := range mods {
+		n += len(v)
+	}
+
+	b := make([]byte, n)
+	bp := copy(b, mods[0])
+	for _, v := range mods[1:] {
+		bp += copy(b[bp:], []byte{';'})
+		bp += copy(b[bp:], v)
+	}
+	return b
+}
+
 type Buffer struct {
 	w io.Writer
 }

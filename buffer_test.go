@@ -101,3 +101,53 @@ func TestFromColor(t *testing.T) {
 func TestStyles(t *testing.T) {
 	assert.Equal(t, "\x1b[32mfoobar\x1b[0m", String("foobar", FgGreen))
 }
+
+func TestString(t *testing.T) {
+	for _, test := range []struct {
+		input  string
+		mods   []Modifier
+		result string
+	}{
+		{
+			"blue on red",
+			[]Modifier{FgBlue, BgRed},
+			"\x1b[34;41mblue on red\x1b[0m",
+		},
+		{
+			"magenta on white",
+			[]Modifier{FgMagenta, BgWhite},
+			"\x1b[35;47mmagenta on white\x1b[0m",
+		},
+		{
+			"cyan",
+			[]Modifier{FgCyan},
+			"\x1b[36mcyan\x1b[0m",
+		},
+		{
+			"default on red",
+			[]Modifier{BgRed},
+			"\x1b[41mdefault on red\x1b[0m",
+		},
+		{
+			"default bold on yellow",
+			[]Modifier{ModBold, BgYellow},
+			"\x1b[1;43mdefault bold on yellow\x1b[0m",
+		},
+		{
+			"bold",
+			[]Modifier{ModBold},
+			"\x1b[1mbold\x1b[0m",
+		},
+		{
+			"no color at all",
+			[]Modifier{},
+			"no color at all",
+		},
+	} {
+		t.Run(test.input, func(t *testing.T) {
+			if output := String(test.input, test.mods...); output != test.result {
+				t.Errorf("Expected %q, got %q", test.result, output)
+			}
+		})
+	}
+}

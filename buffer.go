@@ -119,7 +119,7 @@ func ToHex(color Modifier) string {
 	case color[3] == '2':
 		var skip, r, g, b int
 		fmt.Sscanf(string(color), "%d;2;%d;%d;%d", &skip, &r, &g, &b)
-		return fmt.Sprintf("#%2x%2x%2x", r, g, b)
+		return fmt.Sprintf("#%02x%02x%02x", r, g, b)
 	default:
 		return "invalid color"
 	}

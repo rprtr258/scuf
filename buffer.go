@@ -247,7 +247,12 @@ func (b Buffer) writeMods(mods ...Modifier) {
 
 // Styled write things in callback using modifiers. Don't use Styled inside Styled.
 func (b Buffer) Styled(f func(Buffer), mods ...Modifier) Buffer {
-	if len(mods) == 0 {
+	totalLen := 0
+	for _, mod := range mods {
+		totalLen += len(mod)
+	}
+
+	if totalLen == 0 {
 		f(b)
 		return b
 	}

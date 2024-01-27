@@ -70,7 +70,7 @@ func TestRendering(t *testing.T) {
 
 	assert.Equal(t, "\x1b[38;2;171;205;239;48;5;69;1;3;2;4;5mfoobar\x1b[0m", String("foobar",
 		FgRGB(MustParseHexRGB("#abcdef")),
-		BgANSI256(69),
+		BgANSI(69),
 		ModBold,
 		ModItalic,
 		ModFaint,
@@ -85,7 +85,7 @@ func TestColorConversion(t *testing.T) {
 	}{
 		"ANSI color":     {"#c0c0c0", BgWhite},
 		"BgHiGreen":      {"#00ff00", BgHiGreen},
-		"ANSI-256 color": {"#8700af", BgANSI256(91)},
+		"ANSI-256 color": {"#8700af", BgANSI(91)},
 		"hex color":      {"#abcdef", BgRGB(MustParseHexRGB("#abcdef"))},
 	} {
 		t.Run(name, func(t *testing.T) {

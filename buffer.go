@@ -54,28 +54,40 @@ func ternary[T any](b bool, x, y T) T {
 	return y
 }
 
-// c is 0-15
 func FgANSI(c int) Modifier {
-	// 0-7  -> 30-37
-	// 8-15 -> 90-97
-	return []byte(strconv.Itoa(c + ternary(c < 8, 30, 82)))
+	switch {
+	case c < 0:
+		return nil
+	case c < 8:
+		// 0-7  -> 30-37
+		return []byte(strconv.Itoa(c + 30))
+	case c < 15:
+		// 8-15 -> 90-97
+		return []byte(strconv.Itoa(c + 82))
+	case c < 256:
+		// 16-255
+		return []byte(fmt.Sprintf("38;5;%d", c))
+	default:
+		return nil
+	}
 }
 
-// c is 0-15
 func BgANSI(c int) Modifier {
-	// 0-7  -> 40-47
-	// 8-15 -> 100-107
-	return []byte(strconv.Itoa(c + ternary(c < 8, 40, 92)))
-}
-
-// c is 16-255
-func FgANSI256(c int) Modifier {
-	return []byte(fmt.Sprintf("38;5;%d", c))
-}
-
-// c is 16-255
-func BgANSI256(c int) Modifier {
-	return []byte(fmt.Sprintf("48;5;%d", c))
+	switch {
+	case c < 0:
+		return nil
+	case c < 8:
+		// 0-7  -> 40-47
+		return []byte(strconv.Itoa(c + 40))
+	case c < 16:
+		// 8-15 -> 100-107
+		return []byte(strconv.Itoa(c + 92))
+	case c < 256:
+		// 16-255
+		return []byte(fmt.Sprintf("48;5;%d", c))
+	default:
+		return nil
+	}
 }
 
 // MustParseHexRGB parses hex color string, in form "#f0c" or "#ff1034".
@@ -180,7 +192,7 @@ var (
 	ModOverline            = Modifier("53")
 )
 
-func CombineModifiers(mods ...Modifier) Modifier {
+func Combine(mods ...Modifier) Modifier {
 	// bytes.Join rewritten since it CANNOT ELIDE []Modifier TO [][]byte
 	// return bytes.Join([][]byte(mods), []byte{';'})
 	if len(mods) == 0 {

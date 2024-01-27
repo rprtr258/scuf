@@ -36,7 +36,7 @@ func main() {
 			b.NL()
 		}
 
-		bg := scuf.BgANSI256(i)
+		bg := scuf.BgANSI(i)
 		b.Styled(func(b scuf.Buffer) {
 			b.Printf(" %3d %s ", i, scuf.ToHex(bg))
 		}, fgStep(i, 28), bg)
@@ -49,7 +49,7 @@ func main() {
 			b.NL()
 		}
 
-		bg := scuf.BgANSI256(i)
+		bg := scuf.BgANSI(i)
 		b.Styled(func(b scuf.Buffer) {
 			b.Printf(" %3d %s ", i, scuf.ToHex(bg))
 		}, fgStep(i, 244), bg)

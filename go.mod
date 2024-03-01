@@ -4,7 +4,7 @@ go 1.21
 
 require (
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1
-	github.com/stretchr/testify v1.8.4
+	github.com/stretchr/testify v1.9.0
 )
 
 require (
